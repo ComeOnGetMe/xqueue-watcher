@@ -129,7 +129,7 @@ class XQueueClient(object):
         content = json.loads(content)
         success = []
         for handler in self.handlers:
-            result = handler(content)
+            result = handler(content)  # This should contain correct, msg, and score
             if result:
                 reply = {'xqueue_body': json.dumps(result),
                          'xqueue_header': content['xqueue_header']}

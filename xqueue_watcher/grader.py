@@ -119,21 +119,22 @@ class Grader(object):
             body = json.loads(body)
             student_response = body['student_response']
             payload = body['grader_payload']
-            try:
-                grader_config = json.loads(payload)
-            except ValueError as err:
-                # If parsing json fails, erroring is fine--something is wrong in the content.
-                # However, for debugging, still want to see what the problem is
-                statsd.increment('xqueuewatcher.grader_payload_error')
+            # try:
+            #     grader_config = json.loads(payload)
+            # except ValueError as err:
+            #     # If parsing json fails, erroring is fine--something is wrong in the content.
+            #     # However, for debugging, still want to see what the problem is
+            #     statsd.increment('xqueuewatcher.grader_payload_error')
 
-                self.log.debug("error parsing: '{0}' -- {1}".format(payload, err))
-                raise
+            #     self.log.debug("error parsing: '{0}' -- {1}".format(payload, err))
+            #     raise
 
-            self.log.debug("Processing submission, grader payload: {0}".format(payload))
-            relative_grader_path = grader_config['grader']
-            grader_path = (self.grader_root / relative_grader_path).abspath()
+            # self.log.debug("Processing submission, grader payload: {0}".format(payload))
+            # relative_grader_path = grader_config['grader']
+            # grader_path = (self.grader_root / relative_grader_path).abspath()
             start = time.time()
-            results = self.grade(grader_path, grader_config, student_response)
+            # results = self.grade(grader_path, grader_config, student_response)
+            results = self.grade(payload, files, student_response)
 
             statsd.histogram('xqueuewatcher.grading-time', time.time() - start)
 
