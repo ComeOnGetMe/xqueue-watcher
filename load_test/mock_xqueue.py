@@ -7,34 +7,39 @@ app = flask.Flask(__name__)
 
 counter = itertools.count()
 
+# SUBMISSIONS = [
+# ('', 'ps03/derivatives/grade_derivatives.py'),
+# ('import time;time.sleep(100)', 'ps03/derivatives/grade_derivatives.py'),
+# ('''
+# def foo():
+#     return "hello"
+# ''', 'ps02/bisect/grade_bisect.py'),
+# ('''
+# deff bad():
+#     haha
+# ''', 'ps02/bisect/grade_bisect.py'),
+# ('''
+# monthlyInterestRate = annualInterestRate/12
+# lo = balance/12
+# hi = (balance*(1+monthlyInterestRate)**12)/12
+# done = False
+# while not done :
+#     payment = (lo+hi)/2
+#     nb = balance
+#     for m in range(0,12) :
+#         nb = (nb-payment)*(1+monthlyInterestRate)
+#     done = (abs(nb) < .005);
+#     if (nb > 0) :
+#         lo = payment
+#     else :
+#         hi = payment
+# print('Lowest Payment: %.2f' % payment)
+# ''', 'ps02/bisect/grade_bisect.py'),
+# ]
+
 SUBMISSIONS = [
-('', 'ps03/derivatives/grade_derivatives.py'),
-('import time;time.sleep(100)', 'ps03/derivatives/grade_derivatives.py'),
-('''
-def foo():
-    return "hello"
-''', 'ps02/bisect/grade_bisect.py'),
-('''
-deff bad():
-    haha
-''', 'ps02/bisect/grade_bisect.py'),
-('''
-monthlyInterestRate = annualInterestRate/12
-lo = balance/12
-hi = (balance*(1+monthlyInterestRate)**12)/12
-done = False
-while not done :
-    payment = (lo+hi)/2
-    nb = balance
-    for m in range(0,12) :
-        nb = (nb-payment)*(1+monthlyInterestRate)
-    done = (abs(nb) < .005);
-    if (nb > 0) :
-        lo = payment
-    else :
-        hi = payment
-print('Lowest Payment: %.2f' % payment)
-''', 'ps02/bisect/grade_bisect.py'),
+('', 'ps1/problem1'),
+('import time;time.sleep(100)', 'ps1/problem1'),
 ]
 
 COUNTERS = {
@@ -72,9 +77,10 @@ def get_submission():
             'xqueue_header': '{}.{}'.format(counter.next(), idx),
             'xqueue_body': flask.json.dumps({
                 'student_response': submission,
-                'grader_payload': flask.json.dumps(payload)
+                # 'grader_payload': flask.json.dumps(payload)
+                'grader_payload': grader
             }),
-            'xqueue_files': ''
+            'xqueue_files': flask.json.dumps({'problem1.ipynb': 'https://raw.githubusercontent.com/jupyter/nbgrader/master/nbgrader/docs/source/user_guide/source/ps1/problem1.ipynb'})
         })
     }
     COUNTERS['requests'] += 1

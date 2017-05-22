@@ -18,7 +18,7 @@ WATCHER_CONFIG = {
         "CONNECTIONS": 1,
         "HANDLERS": [
             {
-                "HANDLER": "xqueue_watcher.jailedgrader.JailedGrader",
+                "HANDLER": "xqueue_watcher.docker_grader.DockerGrader",
                 "KWARGS": {
                     "grader_root": path(__file__).dirname() / "../../data/6.00x/graders/",
                 }
@@ -34,7 +34,7 @@ def start_mock_xqueue(port):
     return proc
 
 def start_queue_watcher(config_file, codejail_config_file):
-    cmd = 'python -m xqueue_watcher -f {} -j {}'.format(config_file, codejail_config_file)
+    cmd = 'python -m xqueue_watcher -f {}'.format(config_file)
     print cmd
     proc = subprocess.Popen(cmd.split())
     return proc

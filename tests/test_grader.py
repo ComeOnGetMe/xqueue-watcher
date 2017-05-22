@@ -1,5 +1,5 @@
 import unittest
-import mock
+# import mock
 import json
 import sys
 from path import path
@@ -52,8 +52,8 @@ class GraderTests(unittest.TestCase):
             'xqueue_files': files
             }
 
-    def test_bad_payload(self):
-        g = MockGrader()
+    def test_bad_payload(self, grader_class=MockGrader):
+        g = grader_class()
 
         self.assertRaises(KeyError, g.process_item, {})
         self.assertRaises(ValueError, g.process_item, {'xqueue_body': '', 'xqueue_files': ''})
@@ -63,8 +63,8 @@ class GraderTests(unittest.TestCase):
             })
         self.assertRaises(ValueError, g.process_item, pl)
 
-    def test_no_grader(self):
-        g = grader.Grader()
+    def test_no_grader(self, grader_class=MockGrader):
+        g = grader_class()
         pl = self._make_payload({
             'student_response': 'blah',
             'grader_payload': json.dumps({
@@ -76,8 +76,8 @@ class GraderTests(unittest.TestCase):
         # grader that doesn't exist
         self.assertRaises(Exception, grader.Grader, gradepy='/asdfasdfdasf.py')
 
-    def test_correct_response(self):
-        g = MockGrader()
+    def test_correct_response(self, grader_class=MockGrader):
+        g = grader_class()
         pl = self._make_payload({
             'student_response': 'blah',
             'grader_payload': json.dumps({
@@ -89,8 +89,8 @@ class GraderTests(unittest.TestCase):
         self.assertEqual(reply['correct'], 1)
         self.assertEqual(reply['score'], 1)
 
-    def test_incorrect_response(self):
-        g = MockGrader()
+    def test_incorrect_response(self, grader_class=MockGrader):
+        g = grader_class()
         pl = self._make_payload({
             'student_response': 'blah',
             'grader_payload': json.dumps({
@@ -103,8 +103,8 @@ class GraderTests(unittest.TestCase):
         self.assertEqual(reply['correct'], 0)
         self.assertEqual(reply['score'], 0)
 
-    def test_response_on_queue(self):
-        g = MockGrader()
+    def test_response_on_queue(self, grader_class=MockGrader):
+        g = grader_class()
         pl = self._make_payload({
             'student_response': 'blah',
             'grader_payload': json.dumps({
@@ -123,8 +123,8 @@ class GraderTests(unittest.TestCase):
             popped = q.get()
             self.assertEqual(e, popped)
 
-    def test_subprocess(self):
-        g = MockGrader()
+    def test_subprocess(self, grader_class=MockGrader):
+        g = grader_class()
         pl = self._make_payload({
             'student_response': 'blah',
             'grader_payload': json.dumps({
@@ -138,8 +138,8 @@ class GraderTests(unittest.TestCase):
 
         self.assertRaises(KeyError, g, pl)
 
-    def test_no_fork(self):
-        g = MockGrader(fork_per_item=False)
+    def test_no_fork(self, grader_class=MockGrader):
+        g = grader_class(fork_per_item=False)
         pl = self._make_payload({
             'student_response': 'blah',
             'grader_payload': json.dumps({

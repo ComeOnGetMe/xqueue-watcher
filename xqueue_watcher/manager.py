@@ -70,6 +70,10 @@ class Manager(object):
                 watcher = self.client_from_config(queue_name, config)
                 self.clients.append(watcher)
 
+    def configure_from_file(self, file):
+        with open(file, 'r') as f:
+            self.configure(json.load(f))
+
     def configure_from_directory(self, directory):
         """
         Load configuration files from the config_root
@@ -175,15 +179,20 @@ class Manager(object):
 def main(args=None):
     import argparse
     parser = argparse.ArgumentParser(prog="xqueue_watcher", description="Run grader from settings")
-    parser.add_argument('-d', '--config_root', required=True,
+    parser.add_argument('-d', '--config_root', required=False, default='.',
                         help='Configuration root from which to load general '
                              'watcher configuration. Queue configuration '
                              'is loaded from a conf.d directory relative to '
                              'the root')
+    parser.add_argument('-f', '--config_file', required=False, default=None,
+                        help='Configuration file')
     args = parser.parse_args(args)
 
     manager = Manager()
-    manager.configure_from_directory(args.config_root)
+    if args.config_file is not None:
+        manager.configure_from_file(args.config_file)
+    else:
+        manager.configure_from_directory(args.config_root)
 
     if not manager.clients:
         print("No xqueue watchers configured")
