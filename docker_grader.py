@@ -11,6 +11,7 @@ import random
 """
 # DOCKER_IMAGE = 'zhipengyan/ucsdx:docker-grader'
 DOCKER_IMAGE = 'zhipengyan/ucsdx:docker-grader-v2'
+<<<<<<< HEAD
 COURSE_NAME = 'dummy_course'
 COURSE_DIR = '/home/ubuntu/edX-extensions/edX-nbgrader/dummy-course'
 
